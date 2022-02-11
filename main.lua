@@ -8,6 +8,7 @@ step = 0
 running = false
 
 require("util")
+tween = require("tween")
 
 function love.load()
 	love.window.setMode(resolution.x, resolution.y, { resizable = false })
@@ -27,7 +28,12 @@ end
 int_alpha = 1
 inv_alpha = 0
 
-inv_y = 0
+inv_logo = {
+	x = 0,
+	y = 0
+}
+
+logo_tweener = nil
 
 function love.draw()
 	if running then
@@ -41,8 +47,11 @@ function love.draw()
 		inv_alpha = inv_alpha + (1 / 14)
 	end
 
-	if step > 100 then
-		inv_y = math.lerp(inv_y, -resolution.y*1.5, 0.05)
+	if step == 128 then
+		logo_tweener = tween.new(30, inv_logo, { x = 0, y = -resolution.y }, tween.easing.outSine)
+	end
+	if logo_tweener then
+		local finished = logo_tweener:update(1)
 	end
 
 	if inv_alpha > 0.9999 then
@@ -53,7 +62,7 @@ function love.draw()
 	love.graphics.setColor(1,1,1,int_alpha)
 	love.graphics.draw(assets.intro, 0, 0)
 	love.graphics.setColor(1,1,1,inv_alpha)
-	love.graphics.draw(assets.intro_inv, 0, inv_y)
+	love.graphics.draw(assets.intro_inv, inv_logo.x, inv_logo.y)
 
 	love.graphics.setColor(1,0,0,1)
 	love.graphics.print("FPS: "..love.timer.getFPS()..", step: "..step..", inv_alpha: "..inv_alpha..", int_alpha: "..int_alpha, 5, 10)
