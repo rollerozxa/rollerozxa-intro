@@ -1,14 +1,16 @@
 
-resolution = {
+local resolution = {
 	x = 1280,
 	y = 720
 }
 
-step = 0
-running = false
+local assets = nil
+
+local step = 0
+local running = false
 
 require("util")
-tween = require("tween")
+local tween = require("tween")
 
 function love.load()
 	love.window.setMode(resolution.x, resolution.y, { resizable = false })
@@ -25,15 +27,15 @@ function love.update()
 	end
 end
 
-int_alpha = 1
-inv_alpha = 0
+local int_alpha = 1
+local inv_alpha = 0
 
-inv_logo = {
+local inv_logo = {
 	x = 0,
 	y = 0
 }
 
-logo_tweener = nil
+local logo_tweener = nil
 
 function love.draw()
 	if running then
